@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Conferência de Caixa • Pinheirinho Celulares</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --azul:#0d3bff;
+  --laranja:#ff6a00;
+  --fundo:#f3f5f8;
+  --borda:#dcdcdc;
+}
+
+body{
+  font-family:"Segoe UI", Arial, sans-serif;
+  background:var(--fundo);
+  margin:0;
+  padding:20px;
+}
+
+header{
+  text-align:center;
+  margin-bottom:15px;
+}
+
+header img{
+  max-width:170px;
+  margin-bottom:8px;
+}
+
+header h1{
+  margin:0;
+  font-size:18px;
+}
+
+.container{
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.box{
+  background:#fff;
+  border-radius:10px;
+  border:1px solid var(--borda);
+  padding:12px;
+  width:300px;
+}
+
+.box h2{
+  text-align:center;
+  font-size:14px;
+  margin-bottom:8px;
+  color:var(--azul);
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:12.5px;
+}
+
+th, td{
+  border:1px solid var(--borda);
+  padding:4px;
+  text-align:center;
+}
+
+th{
+  background:var(--azul);
+  color:#fff;
+}
+
+td input{
+  width:55px; /* QUANTIDADE MAIS CURTA */
+  padding:4px;
+  font-size:12px;
+}
+
+input{
+  border-radius:4px;
+  border:1px solid var(--borda);
+  text-align:center;
+}
+
+.linha{
+  margin-bottom:6px;
+}
+
+.linha label{
+  font-size:12.5px;
+  margin-bottom:2px;
+  display:block;
+}
+
+.linha input{
+  width:100%;
+  padding:5px;
+  font-size:12.5px;
+}
+
+.resultado{
+  margin-top:8px;
+  padding:6px;
+  border-radius:6px;
+  font-size:14px;
+  font-weight:600;
+  text-align:center;
+  background:#f8f9ff;
+  border-left:4px solid var(--laranja);
+}
+
+.total{
+  font-weight:bold;
+  background:#f5f7fa;
+}
+
+.acoes{
+  margin-top:20px;
+  text-align:center;
+}
+
+button{
+  background:var(--azul);
+  color:#fff;
+  border:none;
+  padding:10px 20px;
+  border-radius:6px;
+  font-size:14px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#082ccc;
+}
+
+footer{
+  margin-top:20px;
+  text-align:center;
+  font-size:12.5px;
+  color:#555;
+}
+
+/* IMPRESSÃO */
+@media print{
+  body{
+    background:#fff;
+    padding:0;
+  }
+
+  button, .acoes{
+    display:none;
+  }
+
+  .box{
+    border:1px solid #000;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <img src="logo.png" alt="Pinheirinho Celulares">
+  <h1>Conferência de Caixa</h1>
+</header>
+
+<div class="container">
+
+<!-- DINHEIRO CONTAGEM -->
+<div class="box">
+<h2>💵 Dinheiro (Contagem)</h2>
+
+<table>
+<thead>
+<tr>
+  <th>Nota</th>
+  <th>Qtd</th>
+  <th>Total</th>
+</tr>
+</thead>
+<tbody id="linhas"></tbody>
+<tfoot>
+<tr class="total">
+  <td colspan="2">Total Contado</td>
+  <td id="totalContado">R$ 0,00</td>
+</tr>
+</tfoot>
+</table>
+</div>
+
+<!-- CONFERÊNCIA DINHEIRO -->
+<div class="box">
+<h2>📊 Dinheiro (Sistema)</h2>
+
+<div class="linha">
+<label>Abertura</label>
+<input type="number" step="0.01" id="abertura">
+</div>
+
+<div class="linha">
+<label>Entradas</label>
+<input type="number" step="0.01" id="entrada">
+</div>
+
+<div class="linha">
+<label>Sangrias</label>
+<input type="number" step="0.01" id="sangria">
+</div>
+
+<div class="linha">
+<label>Sistema</label>
+<input type="number" step="0.01" id="sistemaDinheiro">
+</div>
+
+<div class="resultado" id="resultadoDinheiro">
+Informe os valores
+</div>
+</div>
+
+<!-- CONFERÊNCIA CARTÃO -->
+<div class="box">
+<h2>💳 Cartão</h2>
+
+<div class="linha">
+<label>Maquininha</label>
+<input type="number" step="0.01" id="maquininha">
+</div>
+
+<div class="linha">
+<label>Sistema</label>
+<input type="number" step="0.01" id="sistemaCartao">
+</div>
+
+<div class="resultado" id="resultadoCartao">
+Informe os valores
+</div>
+</div>
+
+</div>
+
+<div class="acoes">
+  <button onclick="window.print()">🖨️ Imprimir fechamento</button>
+</div>
+
+<footer>
+Programa desenvolvido por <strong>Mattheus Avilar</strong>
+</footer>
+
+<script>
+const valores=[200,100,50,20,10,5,2,1,0.50,0.25,0.10,0.05];
+const tbody=document.getElementById("linhas");
+
+valores.forEach(v=>{
+  const tr=document.createElement("tr");
+  tr.innerHTML=`
+    <td>R$ ${v.toFixed(2).replace(".",",")}</td>
+    <td><input type="number" data-valor="${v}" oninput="calcular()"></td>
+    <td class="total-linha">R$ 0,00</td>`;
+  tbody.appendChild(tr);
+});
+
+document.querySelectorAll("input").forEach(i=>i.addEventListener("input",calcular));
+
+function calcular(){
+  let total=0;
+
+  document.querySelectorAll("#linhas tr").forEach(tr=>{
+    const i=tr.querySelector("input");
+    const v=Number(i.dataset.valor);
+    const q=Number(i.value)||0;
+    const s=v*q;
+    tr.querySelector(".total-linha").innerText="R$ "+s.toFixed(2).replace(".",",");
+    total+=s;
+  });
+
+  totalContado.innerText="R$ "+total.toFixed(2).replace(".",",");
+
+  const ab=Number(abertura.value)||0;
+  const en=Number(entrada.value)||0;
+  const sa=Number(sangria.value)||0;
+  const sis=Number(sistemaDinheiro.value);
+
+  if(!isNaN(sis)){
+    const esperado=ab+en-sa+sis;
+    const d=total-esperado;
+    resultadoDinheiro.innerText=
+      d===0?"✅ DINHEIRO OK":
+      d>0?"⚠️ SOBRA: R$ "+d.toFixed(2).replace(".",","):
+      "❌ FALTA: R$ "+Math.abs(d).toFixed(2).replace(".",",");
+  }
+
+  const m=Number(maquininha.value);
+  const sc=Number(sistemaCartao.value);
+  if(!isNaN(m)&&!isNaN(sc)){
+    const d=m-sc;
+    resultadoCartao.innerText=
+      d===0?"✅ CARTÃO OK":
+      d>0?"⚠️ SOBRA: R$ "+d.toFixed(2).replace(".",","):
+      "❌ FALTA: R$ "+Math.abs(d).toFixed(2).replace(".",",");
+  }
+}
+</script>
+
+</body>
+</html>
