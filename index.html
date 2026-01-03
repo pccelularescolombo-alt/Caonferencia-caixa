@@ -2,70 +2,75 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Conferência de Caixa • Pinheirinho Celulares</title>
+<title>Fechamento de Caixa • Pinheirinho Celulares</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 :root{
   --azul:#0d3bff;
   --laranja:#ff6a00;
-  --fundo:#f3f5f8;
-  --borda:#dcdcdc;
+  --fundo:#f2f4f7;
+  --borda:#d6d9de;
 }
+
+*{box-sizing:border-box}
 
 body{
+  margin:0;
+  padding:10px;
   font-family:"Segoe UI", Arial, sans-serif;
   background:var(--fundo);
-  margin:0;
-  padding:20px;
+  color:#222;
 }
 
+/* ===== TELA ===== */
 header{
   text-align:center;
-  margin-bottom:15px;
-}
-
-header img{
-  max-width:170px;
   margin-bottom:8px;
 }
 
+header img{
+  max-width:140px;
+  margin-bottom:4px;
+}
+
 header h1{
+  font-size:16px;
   margin:0;
-  font-size:18px;
 }
 
 .container{
+  max-width:980px;
+  margin:auto;
   display:flex;
-  gap:14px;
+  gap:10px;
   justify-content:center;
-  flex-wrap:wrap;
 }
 
 .box{
   background:#fff;
-  border-radius:10px;
   border:1px solid var(--borda);
-  padding:12px;
+  border-radius:8px;
+  padding:8px;
   width:300px;
 }
 
 .box h2{
+  font-size:13px;
   text-align:center;
-  font-size:14px;
-  margin-bottom:8px;
+  margin:4px 0 6px;
   color:var(--azul);
 }
 
 table{
   width:100%;
   border-collapse:collapse;
-  font-size:12.5px;
+  font-size:11.5px;
 }
 
-th, td{
+th,td{
   border:1px solid var(--borda);
-  padding:4px;
+  padding:3px;
   text-align:center;
 }
 
@@ -75,88 +80,124 @@ th{
 }
 
 td input{
-  width:55px; /* QUANTIDADE MAIS CURTA */
-  padding:4px;
-  font-size:12px;
-}
-
-input{
-  border-radius:4px;
-  border:1px solid var(--borda);
-  text-align:center;
+  width:42px;
+  padding:3px;
+  font-size:11px;
 }
 
 .linha{
-  margin-bottom:6px;
+  margin-bottom:4px;
 }
 
 .linha label{
-  font-size:12.5px;
-  margin-bottom:2px;
-  display:block;
+  font-size:11.5px;
 }
 
 .linha input{
   width:100%;
-  padding:5px;
-  font-size:12.5px;
-}
-
-.resultado{
-  margin-top:8px;
-  padding:6px;
-  border-radius:6px;
-  font-size:14px;
-  font-weight:600;
-  text-align:center;
-  background:#f8f9ff;
-  border-left:4px solid var(--laranja);
+  padding:4px;
+  font-size:12px;
 }
 
 .total{
   font-weight:bold;
-  background:#f5f7fa;
+  background:#f4f6fa;
+}
+
+.resultado{
+  margin-top:6px;
+  padding:5px;
+  border-radius:5px;
+  font-size:12px;
+  text-align:center;
+  background:#f9faff;
+  border-left:4px solid var(--laranja);
 }
 
 .acoes{
-  margin-top:20px;
   text-align:center;
+  margin-top:10px;
 }
 
 button{
   background:var(--azul);
   color:#fff;
   border:none;
-  padding:10px 20px;
+  padding:8px 16px;
   border-radius:6px;
-  font-size:14px;
+  font-size:13px;
   cursor:pointer;
 }
 
-button:hover{
-  background:#082ccc;
-}
-
 footer{
-  margin-top:20px;
+  margin-top:8px;
   text-align:center;
-  font-size:12.5px;
+  font-size:11.5px;
   color:#555;
 }
 
-/* IMPRESSÃO */
+/* ===== IMPRESSÃO TÉRMICA ===== */
 @media print{
+  @page{
+    size:78mm 295mm;
+    margin:0;
+  }
+
   body{
     background:#fff;
     padding:0;
+    width:78mm;
   }
 
-  button, .acoes{
-    display:none;
+  header img{
+    max-width:90px;
+  }
+
+  header h1{
+    font-size:13px;
+  }
+
+  .container{
+    display:block;
+    max-width:100%;
   }
 
   .box{
-    border:1px solid #000;
+    width:100%;
+    border:none;
+    border-bottom:1px dashed #000;
+    border-radius:0;
+    padding:6px 4px;
+    margin-bottom:6px;
+  }
+
+  table{
+    font-size:10px;
+  }
+
+  th,td{
+    padding:2px;
+  }
+
+  td input{
+    display:none;
+  }
+
+  .resultado{
+    font-size:11px;
+    border-left:none;
+    border-top:1px solid #000;
+    background:none;
+  }
+
+  .acoes,
+  button{
+    display:none;
+  }
+
+  footer{
+    font-size:10px;
+    margin-top:6px;
   }
 }
 </style>
@@ -166,85 +207,48 @@ footer{
 
 <header>
   <img src="amg/logo.png" alt="Pinheirinho Celulares">
-  <h1>Conferência de Caixa</h1>
+  <h1>Fechamento de Caixa</h1>
 </header>
 
 <div class="container">
 
-<!-- DINHEIRO CONTAGEM -->
 <div class="box">
 <h2>💵 Dinheiro (Contagem)</h2>
-
 <table>
 <thead>
-<tr>
-  <th>Nota</th>
-  <th>Qtd</th>
-  <th>Total</th>
-</tr>
+<tr><th>Nota</th><th>Qtd</th><th>Total</th></tr>
 </thead>
 <tbody id="linhas"></tbody>
 <tfoot>
 <tr class="total">
-  <td colspan="2">Total Contado</td>
-  <td id="totalContado">R$ 0,00</td>
+<td colspan="2">Total</td>
+<td id="totalContado">R$ 0,00</td>
 </tr>
 </tfoot>
 </table>
 </div>
 
-<!-- CONFERÊNCIA DINHEIRO -->
 <div class="box">
 <h2>📊 Dinheiro (Sistema)</h2>
-
-<div class="linha">
-<label>Abertura</label>
-<input type="number" step="0.01" id="abertura">
+<div class="linha"><label>Abertura</label><input type="number" step="0.01" id="abertura"></div>
+<div class="linha"><label>Suprimento</label><input type="number" step="0.01" id="suprimento"></div>
+<div class="linha"><label>Sangria</label><input type="number" step="0.01" id="sangria"></div>
+<div class="linha"><label>Valor no sistema</label><input type="number" step="0.01" id="sistemaDinheiro"></div>
+<div class="resultado" id="resultadoDinheiro">Informe os valores</div>
 </div>
 
-<div class="linha">
-<label>Entradas</label>
-<input type="number" step="0.01" id="entrada">
-</div>
-
-<div class="linha">
-<label>Sangrias</label>
-<input type="number" step="0.01" id="sangria">
-</div>
-
-<div class="linha">
-<label>Sistema</label>
-<input type="number" step="0.01" id="sistemaDinheiro">
-</div>
-
-<div class="resultado" id="resultadoDinheiro">
-Informe os valores
-</div>
-</div>
-
-<!-- CONFERÊNCIA CARTÃO -->
 <div class="box">
 <h2>💳 Cartão</h2>
-
-<div class="linha">
-<label>Maquininha</label>
-<input type="number" step="0.01" id="maquininha">
-</div>
-
-<div class="linha">
-<label>Sistema</label>
-<input type="number" step="0.01" id="sistemaCartao">
-</div>
-
-<div class="resultado" id="resultadoCartao">
-Informe os valores
-</div>
+<div class="linha"><label>Maquininha 1</label><input type="number" step="0.01" id="maq1"></div>
+<div class="linha"><label>Maquininha 2</label><input type="number" step="0.01" id="maq2"></div>
+<div class="linha"><label>Valor no sistema</label><input type="number" step="0.01" id="sistemaCartao"></div>
+<div class="resultado" id="resultadoCartao">Informe os valores</div>
 </div>
 
 </div>
 
 <div class="acoes">
-  <button onclick="window.print()">🖨️ Imprimir fechamento</button>
+<button onclick="window.print()">🖨️ Imprimir</button>
 </div>
 
 <footer>
@@ -252,56 +256,56 @@ Programa desenvolvido por <strong>Mattheus Avilar</strong>
 </footer>
 
 <script>
-const valores=[200,100,50,20,10,5,2,1,0.50,0.25,0.10,0.05];
+const valores=[200,100,50,20,10,5,2,1,0.5,0.25,0.1,0.05];
 const tbody=document.getElementById("linhas");
 
 valores.forEach(v=>{
-  const tr=document.createElement("tr");
-  tr.innerHTML=`
+  tbody.innerHTML+=`
+  <tr>
     <td>R$ ${v.toFixed(2).replace(".",",")}</td>
-    <td><input type="number" data-valor="${v}" oninput="calcular()"></td>
-    <td class="total-linha">R$ 0,00</td>`;
-  tbody.appendChild(tr);
+    <td><input type="number" data-v="${v}" oninput="calc()"></td>
+    <td class="linhaTotal">R$ 0,00</td>
+  </tr>`;
 });
 
-document.querySelectorAll("input").forEach(i=>i.addEventListener("input",calcular));
+document.querySelectorAll("input").forEach(i=>i.addEventListener("input",calc));
 
-function calcular(){
+function calc(){
   let total=0;
-
   document.querySelectorAll("#linhas tr").forEach(tr=>{
     const i=tr.querySelector("input");
-    const v=Number(i.dataset.valor);
-    const q=Number(i.value)||0;
+    const v=+i.dataset.v;
+    const q=+i.value||0;
     const s=v*q;
-    tr.querySelector(".total-linha").innerText="R$ "+s.toFixed(2).replace(".",",");
+    tr.querySelector(".linhaTotal").innerText="R$ "+s.toFixed(2).replace(".",",");
     total+=s;
   });
-
   totalContado.innerText="R$ "+total.toFixed(2).replace(".",",");
 
-  const ab=Number(abertura.value)||0;
-  const en=Number(entrada.value)||0;
-  const sa=Number(sangria.value)||0;
-  const sis=Number(sistemaDinheiro.value);
+  const ab=+abertura.value||0;
+  const sup=+suprimento.value||0;
+  const sa=+sangria.value||0;
+  const sd=+sistemaDinheiro.value;
 
-  if(!isNaN(sis)){
-    const esperado=ab+en-sa+sis;
-    const d=total-esperado;
+  if(!isNaN(sd)){
+    const esp=ab+sup-sa+sd;
+    const d=total-esp;
     resultadoDinheiro.innerText=
-      d===0?"✅ DINHEIRO OK":
-      d>0?"⚠️ SOBRA: R$ "+d.toFixed(2).replace(".",","):
-      "❌ FALTA: R$ "+Math.abs(d).toFixed(2).replace(".",",");
+      d===0?"DINHEIRO OK":
+      d>0?"SOBRA R$ "+d.toFixed(2).replace(".",","):
+      "FALTA R$ "+Math.abs(d).toFixed(2).replace(".",",");
   }
 
-  const m=Number(maquininha.value);
-  const sc=Number(sistemaCartao.value);
-  if(!isNaN(m)&&!isNaN(sc)){
-    const d=m-sc;
+  const m1=+maq1.value||0;
+  const m2=+maq2.value||0;
+  const sc=+sistemaCartao.value;
+
+  if(!isNaN(sc)){
+    const d=(m1+m2)-sc;
     resultadoCartao.innerText=
-      d===0?"✅ CARTÃO OK":
-      d>0?"⚠️ SOBRA: R$ "+d.toFixed(2).replace(".",","):
-      "❌ FALTA: R$ "+Math.abs(d).toFixed(2).replace(".",",");
+      d===0?"CARTÃO OK":
+      d>0?"SOBRA R$ "+d.toFixed(2).replace(".",","):
+      "FALTA R$ "+Math.abs(d).toFixed(2).replace(".",",");
   }
 }
 </script>
