@@ -492,6 +492,19 @@ button.danger{
 }
 button.danger:hover{color:#fff;background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.4)}
 
+button.whats{
+  color:#dff7e3;
+  background:linear-gradient(180deg, #1f7a3a, #176b30);
+  border-color:transparent;
+  box-shadow:0 6px 16px rgba(34,197,94,.25);
+}
+button.whats:hover{
+  border-color:transparent;
+  box-shadow:0 8px 22px rgba(34,197,94,.35);
+  color:#fff;
+}
+button.whats i{color:#25d366}
+
 /* ===== FOOTER ===== */
 footer.rodape{
   margin-top:6px;
@@ -524,6 +537,145 @@ footer.rodape strong{color:var(--text-dim);font-weight:600}
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast i{color:var(--verde)}
+
+/* ===== MOBILE / TABLET ===== */
+@media (max-width:980px){
+  body{
+    overflow:auto;
+    padding:10px 10px 24px;
+  }
+  body::before{display:none}
+
+  .wrap{
+    height:auto;
+    max-width:100%;
+    display:block;
+  }
+
+  header.topo{
+    padding:10px 12px;
+    margin-bottom:10px;
+    border-radius:14px;
+    gap:10px;
+  }
+  .brand{gap:10px;min-width:0;flex:1}
+  .brand .logo-wrap{width:40px;height:40px;border-radius:9px;flex-shrink:0}
+  .brand .logo-wrap .fallback{font-size:15px}
+  .brand h1{font-size:15px;line-height:1.15}
+  .brand .sub{font-size:9.5px;letter-spacing:.5px}
+  .relogio .hora{font-size:15px}
+  .relogio .data{font-size:9px;letter-spacing:1px;margin-top:2px}
+
+  .grid{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .card{
+    padding:12px 13px;
+    border-radius:14px;
+  }
+  .card-head{margin-bottom:10px;padding-bottom:8px}
+  .card-head h2{font-size:12.5px}
+  .card-head .icon{width:30px;height:30px;font-size:13px}
+  .card-head .tag{font-size:9.5px}
+
+  /* Tabela mais compacta no mobile */
+  .tabela{font-size:12.5px}
+  .tabela thead th{font-size:10px;padding:5px 4px;letter-spacing:1px}
+  .tabela tbody td{font-size:12px;padding:5px 4px;line-height:1.2}
+  .tabela input[type="number"]{
+    width:100%;
+    max-width:78px;
+    padding:7px 6px;
+    font-size:14px;
+    border-radius:7px;
+  }
+  .tabela tfoot td{font-size:12.5px;padding:8px 4px}
+  .tabela tfoot td:first-child{font-size:10.5px}
+
+  /* Campos com input maiores pra dedo */
+  .field{margin-bottom:9px}
+  .field label{font-size:10.5px;margin-bottom:5px}
+  .field input{
+    padding:11px 12px;
+    font-size:15px;
+    border-radius:9px;
+  }
+
+  /* Resultado */
+  .resultado{
+    padding:11px 13px;
+    margin-top:12px;
+    border-radius:11px;
+    gap:11px;
+  }
+  .resultado .res-icon{width:36px;height:36px;font-size:14px}
+  .resultado .res-label{font-size:10px;letter-spacing:1.2px}
+  .resultado .res-value{font-size:15.5px}
+
+  /* Resumo + Ações empilhados */
+  .resumo{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px 6px;
+    padding:12px 14px;
+    margin-top:10px;
+    border-radius:14px;
+  }
+  .resumo .stat{
+    padding:6px 10px;
+    border-left:2px solid var(--border);
+  }
+  .resumo .stat:nth-child(odd){border-left:none}
+  .resumo .stat .k{font-size:9.5px;letter-spacing:1.1px}
+  .resumo .stat .v{font-size:15.5px}
+
+  .acoes{
+    grid-column:1 / -1;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:4px;
+    padding-top:10px;
+    border-top:1px dashed var(--border);
+  }
+  .acoes button{
+    width:100%;
+    justify-content:center;
+    padding:11px 8px;
+    font-size:12.5px;
+  }
+  .acoes .primary{grid-column:1 / -1}
+
+  footer.rodape{
+    margin-top:14px;
+    font-size:11px;
+  }
+}
+
+/* ===== MOBILE PEQUENO ===== */
+@media (max-width:420px){
+  body{padding:8px 8px 20px}
+  .brand h1{font-size:14px}
+  .brand .sub{font-size:9px}
+  .relogio .hora{font-size:13.5px}
+  .relogio .data{font-size:8.5px}
+
+  .card-head .tag{display:none}
+  .field input{font-size:14.5px}
+
+  .resumo{grid-template-columns:1fr 1fr}
+  .acoes{grid-template-columns:1fr 1fr;gap:7px}
+  .acoes .primary{grid-column:1 / -1}
+  .acoes .whats{grid-column:1 / -1}
+
+  /* table - mostrar apenas R$/Qtd/Sub em colunas mais apertadas */
+  .tabela{font-size:12px}
+  .tabela tbody td{font-size:11.5px;padding:5px 3px}
+  .tabela input[type="number"]{max-width:64px;font-size:13.5px;padding:7px 4px}
+  .tabela tbody td:nth-child(3){font-size:11.5px}
+}
 
 /* ===== IMPRESSÃO TÉRMICA 78mm ===== */
 @media print{
@@ -785,6 +937,9 @@ footer.rodape strong{color:var(--text-dim);font-weight:600}
     <button class="primary" onclick="window.print()">
       <i class="fa-solid fa-print"></i> Imprimir
     </button>
+    <button class="whats" onclick="copiarWhats()">
+      <i class="fa-brands fa-whatsapp"></i> WhatsApp
+    </button>
     <button onclick="salvarManual()">
       <i class="fa-solid fa-floppy-disk"></i> Salvar
     </button>
@@ -979,6 +1134,127 @@ function limparTudo(){
   localStorage.removeItem(STORAGE_KEY);
   calc();
   toast("Todos os campos foram limpos");
+}
+
+function gerarTextoWhats(){
+  const d=new Date();
+  const pad=n=>String(n).padStart(2,"0");
+  const dataStr=`${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}`;
+  const horaStr=`${pad(d.getHours())}:${pad(d.getMinutes())}`;
+
+  let txt="";
+  txt+="🏪 *PINHEIRINHO CELULARES*\n";
+  txt+="📋 *Fechamento de Caixa*\n";
+  txt+=`📅 ${dataStr}  •  🕐 ${horaStr}\n`;
+  txt+="━━━━━━━━━━━━━━━━━\n\n";
+
+  /* DINHEIRO - contagem detalhada */
+  txt+="💵 *DINHEIRO*\n";
+  let totalDin=0;
+  const linhas=[];
+  document.querySelectorAll("#linhas tr").forEach(tr=>{
+    const i=tr.querySelector("input");
+    const v=+i.dataset.v;
+    const q=+i.value||0;
+    if(q>0){
+      const s=v*q;
+      linhas.push(`• R$ ${v.toFixed(2).replace(".",",")} × ${q} = ${brl(s)}`);
+      totalDin+=s;
+    }
+  });
+  if(linhas.length){
+    txt+=linhas.join("\n")+"\n";
+  }else{
+    txt+="_(sem cédulas contadas)_\n";
+  }
+  txt+=`*Total contado:* ${brl(totalDin)}\n\n`;
+
+  /* DINHEIRO - sistema */
+  const ab=+elAb.value||0;
+  const sup=+elSup.value||0;
+  const sa=+elSa.value||0;
+  const sdRaw=elSd.value;
+  if(ab||sup||sa||sdRaw!==""){
+    txt+="📊 _Conferência:_\n";
+    if(ab) txt+=`Abertura: ${brl(ab)}\n`;
+    if(sup) txt+=`Suprimento: + ${brl(sup)}\n`;
+    if(sa) txt+=`Sangria: − ${brl(sa)}\n`;
+    if(sdRaw!==""){
+      const sd=+sdRaw||0;
+      const esperado=ab+sup-sa+sd;
+      txt+=`Sistema: ${brl(sd)}\n`;
+      txt+=`*Esperado em caixa:* ${brl(esperado)}\n`;
+      const dif=totalDin-esperado;
+      if(Math.abs(dif)<0.005){
+        txt+=`✅ *CONFERIDO* — R$ 0,00\n`;
+      }else if(dif>0){
+        txt+=`🟢 *SOBRA:* + ${brl(dif)}\n`;
+      }else{
+        txt+=`🔴 *FALTA:* − ${brl(Math.abs(dif))}\n`;
+      }
+    }
+    txt+="\n";
+  }
+
+  /* CARTAO */
+  const m1=+elM1.value||0;
+  const m2=+elM2.value||0;
+  const scRaw=elSc.value;
+  const totalCar=m1+m2;
+  txt+="💳 *CARTÃO*\n";
+  if(m1) txt+=`Maquininha 1: ${brl(m1)}\n`;
+  if(m2) txt+=`Maquininha 2: ${brl(m2)}\n`;
+  txt+=`*Total maquininhas:* ${brl(totalCar)}\n`;
+  if(scRaw!==""){
+    const sc=+scRaw||0;
+    txt+=`Sistema: ${brl(sc)}\n`;
+    const dif=totalCar-sc;
+    if(Math.abs(dif)<0.005){
+      txt+=`✅ *CONFERIDO* — R$ 0,00\n`;
+    }else if(dif>0){
+      txt+=`🟢 *SOBRA:* + ${brl(dif)}\n`;
+    }else{
+      txt+=`🔴 *FALTA:* − ${brl(Math.abs(dif))}\n`;
+    }
+  }
+  txt+="\n";
+
+  /* RESUMO */
+  txt+="━━━━━━━━━━━━━━━━━\n";
+  txt+="📈 *RESUMO GERAL*\n";
+  txt+=`Dinheiro: ${brl(totalDin)}\n`;
+  txt+=`Cartão: ${brl(totalCar)}\n`;
+  txt+=`*TOTAL: ${brl(totalDin+totalCar)}*\n`;
+  txt+="━━━━━━━━━━━━━━━━━\n";
+  txt+="_Programa desenvolvido por Mattheus Avilar_";
+
+  return txt;
+}
+
+async function copiarWhats(){
+  const texto=gerarTextoWhats();
+  try{
+    if(navigator.clipboard && window.isSecureContext){
+      await navigator.clipboard.writeText(texto);
+      toast("Resumo copiado! Cole no WhatsApp 📲");
+    }else{
+      /* fallback */
+      const ta=document.createElement("textarea");
+      ta.value=texto;
+      ta.style.position="fixed";ta.style.opacity="0";
+      document.body.appendChild(ta);
+      ta.focus();ta.select();
+      const ok=document.execCommand("copy");
+      document.body.removeChild(ta);
+      if(ok) toast("Resumo copiado! Cole no WhatsApp 📲");
+      else throw new Error("falhou");
+    }
+  }catch(e){
+    /* última tentativa: abrir WhatsApp Web direto */
+    const url="https://wa.me/?text="+encodeURIComponent(texto);
+    window.open(url,"_blank");
+    toast("Abrindo WhatsApp...", true);
+  }
 }
 
 /* INIT */
