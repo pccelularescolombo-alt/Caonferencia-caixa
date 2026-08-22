@@ -492,19 +492,6 @@ button.danger{
 }
 button.danger:hover{color:#fff;background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.4)}
 
-button.whats{
-  color:#dff7e3;
-  background:linear-gradient(180deg, #1f7a3a, #176b30);
-  border-color:transparent;
-  box-shadow:0 6px 16px rgba(34,197,94,.25);
-}
-button.whats:hover{
-  border-color:transparent;
-  box-shadow:0 8px 22px rgba(34,197,94,.35);
-  color:#fff;
-}
-button.whats i{color:#25d366}
-
 /* ===== FOOTER ===== */
 footer.rodape{
   margin-top:6px;
@@ -646,7 +633,7 @@ footer.rodape strong{color:var(--text-dim);font-weight:600}
     padding:11px 8px;
     font-size:12.5px;
   }
-  .acoes .primary{grid-column:1 / -1}
+  .acoes .primary,.acoes .danger{grid-column:1 / -1}
 
   footer.rodape{
     margin-top:14px;
@@ -667,8 +654,7 @@ footer.rodape strong{color:var(--text-dim);font-weight:600}
 
   .resumo{grid-template-columns:1fr 1fr}
   .acoes{grid-template-columns:1fr 1fr;gap:7px}
-  .acoes .primary{grid-column:1 / -1}
-  .acoes .whats{grid-column:1 / -1}
+  .acoes .primary,.acoes .danger{grid-column:1 / -1}
 
   /* table - mostrar apenas R$/Qtd/Sub em colunas mais apertadas */
   .tabela{font-size:12px}
@@ -859,19 +845,19 @@ footer.rodape strong{color:var(--text-dim);font-weight:600}
 
     <div class="field">
       <label><i class="fa-solid fa-door-open"></i> Abertura</label>
-      <input type="number" step="0.01" id="abertura" placeholder="0,00">
+      <input type="text" inputmode="decimal" class="campo-decimal" id="abertura" placeholder="0,00">
     </div>
     <div class="field">
       <label><i class="fa-solid fa-plus"></i> Suprimento</label>
-      <input type="number" step="0.01" id="suprimento" placeholder="0,00">
+      <input type="text" inputmode="decimal" class="campo-decimal" id="suprimento" placeholder="0,00">
     </div>
     <div class="field">
       <label><i class="fa-solid fa-minus"></i> Sangria</label>
-      <input type="number" step="0.01" id="sangria" placeholder="0,00">
+      <input type="text" inputmode="decimal" class="campo-decimal" id="sangria" placeholder="0,00">
     </div>
     <div class="field">
       <label><i class="fa-solid fa-server"></i> Valor no sistema</label>
-      <input type="number" step="0.01" id="sistemaDinheiro" placeholder="0,00">
+      <input type="text" inputmode="decimal" class="campo-decimal" id="sistemaDinheiro" placeholder="0,00">
     </div>
 
     <div class="resultado" id="resultadoDinheiro">
@@ -893,15 +879,15 @@ footer.rodape strong{color:var(--text-dim);font-weight:600}
 
     <div class="field">
       <label><i class="fa-solid fa-mobile-screen"></i> Maquininha 1</label>
-      <input type="number" step="0.01" id="maq1" placeholder="0,00">
+      <input type="text" inputmode="decimal" class="campo-decimal" id="maq1" placeholder="0,00">
     </div>
     <div class="field">
       <label><i class="fa-solid fa-mobile-screen"></i> Maquininha 2</label>
-      <input type="number" step="0.01" id="maq2" placeholder="0,00">
+      <input type="text" inputmode="decimal" class="campo-decimal" id="maq2" placeholder="0,00">
     </div>
     <div class="field">
       <label><i class="fa-solid fa-server"></i> Valor no sistema</label>
-      <input type="number" step="0.01" id="sistemaCartao" placeholder="0,00">
+      <input type="text" inputmode="decimal" class="campo-decimal" id="sistemaCartao" placeholder="0,00">
     </div>
 
     <div class="resultado" id="resultadoCartao">
@@ -937,12 +923,6 @@ footer.rodape strong{color:var(--text-dim);font-weight:600}
     <button class="primary" onclick="window.print()">
       <i class="fa-solid fa-print"></i> Imprimir
     </button>
-    <button class="whats" onclick="copiarWhats()">
-      <i class="fa-brands fa-whatsapp"></i> WhatsApp
-    </button>
-    <button onclick="salvarManual()">
-      <i class="fa-solid fa-floppy-disk"></i> Salvar
-    </button>
     <button class="danger" onclick="limparTudo()">
       <i class="fa-solid fa-trash-can"></i> Limpar
     </button>
@@ -966,6 +946,37 @@ function brl(n){
   return "R$ " + Number(n).toFixed(2).replace(".",",").replace(/\B(?=(\d{3})+(?!\d))/g,".");
 }
 
+/* ===== IDENTIFICAÇÃO DE PONTUAÇÃO (vírgula e ponto como separador decimal) ===== */
+
+/* Converte um texto digitado (com vírgula ou ponto) em número, aceitando os dois formatos */
+function parseNum(v){
+  if(v===undefined||v===null) return 0;
+  v=String(v).trim();
+  if(v==="") return 0;
+  v=v.replace(/[^\d.,-]/g,"");
+  if(v.indexOf(",")>-1){
+    /* vírgula presente: é o separador decimal; pontos viram separador de milhar */
+    v=v.replace(/\./g,"").replace(",",".");
+  }
+  const n=parseFloat(v);
+  return isNaN(n)?0:n;
+}
+
+/* Enquanto o usuário digita, mantém só dígitos e um separador decimal (vírgula ou ponto) */
+function sanitizeDecimalInput(el){
+  let v=el.value;
+  v=v.replace(/[^\d.,]/g,"");
+  const commaIdx=v.lastIndexOf(",");
+  const dotIdx=v.lastIndexOf(".");
+  const sepIdx=Math.max(commaIdx,dotIdx);
+  if(sepIdx>-1){
+    const intPart=v.slice(0,sepIdx).replace(/[.,]/g,"");
+    const decPart=v.slice(sepIdx+1).replace(/[.,]/g,"").slice(0,2);
+    v=intPart+","+decPart;
+  }
+  el.value=v;
+}
+
 /* monta linhas das cédulas */
 valores.forEach(v=>{
   const row=document.createElement("tr");
@@ -982,7 +993,10 @@ valores.forEach(v=>{
 /* inputs */
 const allInputs=document.querySelectorAll("input");
 allInputs.forEach(i=>{
-  i.addEventListener("input",()=>{calc();autoSave();});
+  i.addEventListener("input",()=>{
+    if(i.classList.contains("campo-decimal")) sanitizeDecimalInput(i);
+    calc();autoSave();
+  });
 });
 
 const elTotalContado=document.getElementById("totalContado");
@@ -1023,14 +1037,14 @@ function calc(){
   elTotalContado.innerText=brl(totalDin);
 
   /* DINHEIRO */
-  const ab=+elAb.value||0;
-  const sup=+elSup.value||0;
-  const sa=+elSa.value||0;
+  const ab=parseNum(elAb.value);
+  const sup=parseNum(elSup.value);
+  const sa=parseNum(elSa.value);
   const sdRaw=elSd.value;
 
   let difDin=0;
   if(sdRaw!==""){
-    const sd=+sdRaw||0;
+    const sd=parseNum(sdRaw);
     const esperado=ab+sup-sa+sd;
     difDin=totalDin-esperado;
     if(Math.abs(difDin)<0.005){
@@ -1045,13 +1059,13 @@ function calc(){
   }
 
   /* CARTAO */
-  const m1=+elM1.value||0;
-  const m2=+elM2.value||0;
+  const m1=parseNum(elM1.value);
+  const m2=parseNum(elM2.value);
   const scRaw=elSc.value;
   let totalCar=m1+m2;
   let difCar=0;
   if(scRaw!==""){
-    const sc=+scRaw||0;
+    const sc=parseNum(scRaw);
     difCar=totalCar-sc;
     if(Math.abs(difCar)<0.005){
       setResultado(elResCar,"ok","Cartão","CONFERIDO • R$ 0,00","fa-circle-check");
@@ -1123,138 +1137,12 @@ function toast(msg, ok=true){
   toast._t=setTimeout(()=>t.classList.remove("show"),1800);
 }
 
-function salvarManual(){
-  autoSave();
-  toast("Fechamento salvo no navegador");
-}
-
 function limparTudo(){
   if(!confirm("Deseja limpar todos os campos? Esta ação não pode ser desfeita.")) return;
   document.querySelectorAll("input[type=number]").forEach(i=>i.value="");
   localStorage.removeItem(STORAGE_KEY);
   calc();
   toast("Todos os campos foram limpos");
-}
-
-function gerarTextoWhats(){
-  const d=new Date();
-  const pad=n=>String(n).padStart(2,"0");
-  const dataStr=`${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}`;
-  const horaStr=`${pad(d.getHours())}:${pad(d.getMinutes())}`;
-
-  let txt="";
-  txt+="🏪 *PINHEIRINHO CELULARES*\n";
-  txt+="📋 *Fechamento de Caixa*\n";
-  txt+=`📅 ${dataStr}  •  🕐 ${horaStr}\n`;
-  txt+="━━━━━━━━━━━━━━━━━\n\n";
-
-  /* DINHEIRO - contagem detalhada */
-  txt+="💵 *DINHEIRO*\n";
-  let totalDin=0;
-  const linhas=[];
-  document.querySelectorAll("#linhas tr").forEach(tr=>{
-    const i=tr.querySelector("input");
-    const v=+i.dataset.v;
-    const q=+i.value||0;
-    if(q>0){
-      const s=v*q;
-      linhas.push(`• R$ ${v.toFixed(2).replace(".",",")} × ${q} = ${brl(s)}`);
-      totalDin+=s;
-    }
-  });
-  if(linhas.length){
-    txt+=linhas.join("\n")+"\n";
-  }else{
-    txt+="_(sem cédulas contadas)_\n";
-  }
-  txt+=`*Total contado:* ${brl(totalDin)}\n\n`;
-
-  /* DINHEIRO - sistema */
-  const ab=+elAb.value||0;
-  const sup=+elSup.value||0;
-  const sa=+elSa.value||0;
-  const sdRaw=elSd.value;
-  if(ab||sup||sa||sdRaw!==""){
-    txt+="📊 _Conferência:_\n";
-    if(ab) txt+=`Abertura: ${brl(ab)}\n`;
-    if(sup) txt+=`Suprimento: + ${brl(sup)}\n`;
-    if(sa) txt+=`Sangria: − ${brl(sa)}\n`;
-    if(sdRaw!==""){
-      const sd=+sdRaw||0;
-      const esperado=ab+sup-sa+sd;
-      txt+=`Sistema: ${brl(sd)}\n`;
-      txt+=`*Esperado em caixa:* ${brl(esperado)}\n`;
-      const dif=totalDin-esperado;
-      if(Math.abs(dif)<0.005){
-        txt+=`✅ *CONFERIDO* — R$ 0,00\n`;
-      }else if(dif>0){
-        txt+=`🟢 *SOBRA:* + ${brl(dif)}\n`;
-      }else{
-        txt+=`🔴 *FALTA:* − ${brl(Math.abs(dif))}\n`;
-      }
-    }
-    txt+="\n";
-  }
-
-  /* CARTAO */
-  const m1=+elM1.value||0;
-  const m2=+elM2.value||0;
-  const scRaw=elSc.value;
-  const totalCar=m1+m2;
-  txt+="💳 *CARTÃO*\n";
-  if(m1) txt+=`Maquininha 1: ${brl(m1)}\n`;
-  if(m2) txt+=`Maquininha 2: ${brl(m2)}\n`;
-  txt+=`*Total maquininhas:* ${brl(totalCar)}\n`;
-  if(scRaw!==""){
-    const sc=+scRaw||0;
-    txt+=`Sistema: ${brl(sc)}\n`;
-    const dif=totalCar-sc;
-    if(Math.abs(dif)<0.005){
-      txt+=`✅ *CONFERIDO* — R$ 0,00\n`;
-    }else if(dif>0){
-      txt+=`🟢 *SOBRA:* + ${brl(dif)}\n`;
-    }else{
-      txt+=`🔴 *FALTA:* − ${brl(Math.abs(dif))}\n`;
-    }
-  }
-  txt+="\n";
-
-  /* RESUMO */
-  txt+="━━━━━━━━━━━━━━━━━\n";
-  txt+="📈 *RESUMO GERAL*\n";
-  txt+=`Dinheiro: ${brl(totalDin)}\n`;
-  txt+=`Cartão: ${brl(totalCar)}\n`;
-  txt+=`*TOTAL: ${brl(totalDin+totalCar)}*\n`;
-  txt+="━━━━━━━━━━━━━━━━━\n";
-  txt+="_Programa desenvolvido por Mattheus Avilar_";
-
-  return txt;
-}
-
-async function copiarWhats(){
-  const texto=gerarTextoWhats();
-  try{
-    if(navigator.clipboard && window.isSecureContext){
-      await navigator.clipboard.writeText(texto);
-      toast("Resumo copiado! Cole no WhatsApp 📲");
-    }else{
-      /* fallback */
-      const ta=document.createElement("textarea");
-      ta.value=texto;
-      ta.style.position="fixed";ta.style.opacity="0";
-      document.body.appendChild(ta);
-      ta.focus();ta.select();
-      const ok=document.execCommand("copy");
-      document.body.removeChild(ta);
-      if(ok) toast("Resumo copiado! Cole no WhatsApp 📲");
-      else throw new Error("falhou");
-    }
-  }catch(e){
-    /* última tentativa: abrir WhatsApp Web direto */
-    const url="https://wa.me/?text="+encodeURIComponent(texto);
-    window.open(url,"_blank");
-    toast("Abrindo WhatsApp...", true);
-  }
 }
 
 /* INIT */
